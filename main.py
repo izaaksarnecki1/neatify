@@ -20,7 +20,7 @@ def run(source: Path, dest: Path, dry_run: bool) -> None:
 
     print(f"Scanning files in: {source}")
 
-    scanner = Scanner(source)
+    scanner = Scanner(config)
     files = scanner.scan()
 
     print(f"Found {len(files)} files.")
