@@ -23,4 +23,8 @@ pip install -r requirements.txt
 
 ## Usage
 
-_Section will be filled in when usage is possible_
+Running:
+
+```bash
+python3 main.py --source {source_folder} --dest {destination_folder}
+```
