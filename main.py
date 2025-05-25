@@ -1,7 +1,10 @@
-from cli.interface import app
 from pathlib import Path
-from organizer.scanner import Scanner
 from config import load_config
+
+from cli.interface import app
+
+from organizer.classifier import Classifier
+from organizer.scanner import Scanner
 
 
 def run(source: Path, dest: Path, dry_run: bool) -> None:
@@ -21,9 +24,13 @@ def run(source: Path, dest: Path, dry_run: bool) -> None:
     print(f"Scanning files in: {source}")
 
     scanner = Scanner(config)
+    classifier = Classifier(config["categories"])
     files = scanner.scan()
 
     print(f"Found {len(files)} files.")
+    for file in files:
+        file.category = classifier.classify(file)
+
     for file in files[:10]:
         print(file)
 
