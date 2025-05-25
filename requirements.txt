@@ -6,6 +6,7 @@ pillow==11.2.1
 Pygments==2.19.1
 pytesseract==0.3.13
 python-magic==0.4.27
+PyYAML==6.0.2
 rich==14.0.0
 shellingham==1.5.4
 typer==0.15.4
