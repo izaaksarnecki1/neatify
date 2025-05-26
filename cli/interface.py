@@ -27,12 +27,12 @@ def organize(
         False, "--check-duplicates", "-cd", help="Enable duplicate checking and deletion"
     ),
     delete_mode: str = typer.Option(
-        "none", "--delete-mode", "-dm", help="How to handle duplicates: none | oldest | manual",
+        None, "--delete-mode", "-dm", help="How to handle duplicates: oldest | manual",
         case_sensitive=False
     )
 
 ):
-    """
+    """ 
     Organize files from SOURCE into categorized folders in DEST
     """
     source_path = validate_path(source)
