@@ -4,6 +4,7 @@ dry_run: true
 categories:
   images: ["*.jpg", "*.png", "*jpeg", "*.gif"]
   documents: ["*.pdf", "*.docx", "*.txt"] # maybe .txt is not necessarily under the same category?
-  code: ["*.java", "*.py", "*.cpp", "*.c", "*.rs", "*.go"] # can always be expanded
+  code: ["*.java*", "*.py*", "*.cpp", "*.c", "*.rs", "*.go"] # can always be expanded
   videoes: ["*.mp4", "*.mov"]
   archives: ["*.tar.gz", "*.zip", "*.rar"]
+  uncategorized: []
