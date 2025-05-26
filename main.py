@@ -2,7 +2,7 @@ from cli.interface import app
 from pathlib import Path
 from organizer.scanner import Scanner
 from config import load_config
-from organizer.duplicates import find_duplicates, prompt_delete_mode, delete_duplicates
+from organizer.duplicates import find_duplicates, delete_duplicates
 
 def run(source: Path, dest: Path, dry_run: bool, delete_mode: str, check_duplicates: bool) -> None:
     # function where main logic will be placed. Called from interface.py
@@ -33,7 +33,7 @@ def run(source: Path, dest: Path, dry_run: bool, delete_mode: str, check_duplica
                 for file in group:
                     print(f"{file.path}")
             if delete_mode is None:
-                delete_mode = delete_mode = prompt_delete_mode()
+                delete_mode = input("\nEnter delete mode (oldest | manual): \n").strip().lower()
 
             if delete_mode in ["oldest", "manual"]:
                 delete_duplicates(duplicates, dry_run, delete_mode)

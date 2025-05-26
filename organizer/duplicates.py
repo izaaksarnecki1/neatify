@@ -21,9 +21,6 @@ def find_duplicates(files):
     
     return duplicates
 
-def prompt_delete_mode():
-    return input("\nEnter delete mode (oldest | manual): \n").strip().lower()
-
 def delete_duplicates(duplicates, dry_run: bool, mode: str):
     for group in duplicates:
         if mode == "oldest":
