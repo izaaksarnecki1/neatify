@@ -22,7 +22,7 @@ class Organizer:
             dest_folder.mkdir(parents=True, exist_ok=True)
             print(f"[CREATE] Created folder: {dest_folder}")
 
-        dest_path = self._get_unique_destination(dest_folder, file.path.name)
+        dest_path = self._get_unique_destination(dest_folder, file)
 
         if self.dry_run:
             print(f"[DRY-RUN] Would move {file.path} -> {dest_path}")
@@ -65,9 +65,9 @@ class Organizer:
         for cat, count in stats["by_category"].items():
             print(f"    - {cat}: {count} file(s)")
 
-    def _get_unique_destination(self, dest_folder: Path, filename: str) -> Path:
-        base = Path(filename).stem
-        ext = Path(filename).suffix
+    def _get_unique_destination(self, dest_folder: Path, file: FileRecord) -> Path:
+        base = file.path.stem
+        ext = file.path.suffix
         dest_path = dest_folder / f"{base}{ext}"
         counter = 1
         while dest_path.exists():
