@@ -57,7 +57,7 @@ def run(source: Path, dest: Path, dry_run: bool, delete_mode: str, check_duplica
     config["dry_run"] = dry_run
 
     if check_duplicates:
-        print(f"Scanning files in: {source}\n")
+        print(f"Checking for duplicate files in: {source}\n")
 
     scanner = Scanner(config)
     classifier = Classifier(config["categories"])
