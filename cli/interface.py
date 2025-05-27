@@ -23,6 +23,9 @@ def organize(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Run without applying changes"
     ),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Use a verbose logging system"
+    )
 ):
     """
     Organize files from SOURCE into categorized folders in DEST
@@ -32,4 +35,4 @@ def organize(
 
     from main import run
 
-    run(source_path, dest_path, dry_run)
+    run(source_path, dest_path, dry_run, verbose)

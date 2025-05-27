@@ -1,6 +1,8 @@
 from pathlib import Path
 from config import load_config
 
+from utils.logger import setup_logger
+
 from cli.interface import app
 
 from organizer.classifier import Classifier
@@ -8,19 +10,20 @@ from organizer.scanner import Scanner
 from organizer.actions import Organizer
 
 
-def run(source: Path, dest: Path, dry_run: bool) -> None:
-    # function where main logic will be placed. Called from interface.py
-    # print(f"Source: {source}")
-    # print(f"Destination: {dest}")
-    # print(f"Dry run: {dry_run}")
-
+def run(source: Path, dest: Path, dry_run: bool, verbose: bool) -> None:
+    """
+    Runs the actual application. Called from cli/interface.py
+    """
     config = load_config()
     if source:
         config["source"] = source
     if dest:
         config["dest"] = dest
 
+    config["verbose"] = verbose
     config["dry_run"] = dry_run
+
+    setup_logger(verbose=config["verbose"])
 
     print(f"Scanning files in: {source}")
 
