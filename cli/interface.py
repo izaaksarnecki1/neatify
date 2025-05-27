@@ -23,6 +23,9 @@ def organize(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Run without applying changes"
     ),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Use a verbose logging system"
+    )
     check_duplicates: bool = typer.Option(
         False, "--check-duplicates", "-cd", help="Enable duplicate checking and deletion"
     ),
@@ -40,4 +43,4 @@ def organize(
 
     from main import run
 
-    run(source_path, dest_path, dry_run, delete_mode, check_duplicates)
+    run(source_path, dest_path, dry_run, verbose, delete_mode, check_duplicates)
