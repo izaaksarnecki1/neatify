@@ -1,8 +1,10 @@
 import logging
+import datetime
 
 
-def setup_logger(verbose: bool = False, log_file: str = "neatify.log"):
+def setup_logger(verbose: bool = False, log_file: str = "logs/neatify"):
     level = logging.DEBUG if verbose else logging.INFO
+    log_file += "-" + str(datetime.datetime.now()) + ".log"
 
     logging.basicConfig(
         level=level,
