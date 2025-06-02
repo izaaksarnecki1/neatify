@@ -1,7 +1,6 @@
 from collections import defaultdict
 from send2trash import send2trash
 
-
 def find_duplicates(files):
     size_map = defaultdict(list)
     for file in files:
@@ -21,14 +20,14 @@ def find_duplicates(files):
     
     return duplicates
 
-def delete_duplicates(duplicates, dry_run: bool, mode: str):
+def delete_duplicates(duplicates, dry_run: bool, delete_mode: str):
     for group in duplicates:
-        if mode == "oldest":
-            group.sort(key=lambda f: f.path.stat().st_mtime)  # sort by last modified
+        if delete_mode == "clean" or delete_mode == "c":
+            group.sort(key=lambda f: (len(str(f.path.name)), f.path.name))  # sort by last modified
             keep = group[0]
             to_delete = group[1:]
-            print(f"\nKeeping (oldest): {keep.path}")
-        elif mode == "manual":
+            print(f"\nKeeping (clean): {keep.path}")
+        elif delete_mode == "manual" or delete_mode == "m":
             print("Duplicate group:\n")
             for idx, fr in enumerate(group):
                 print(f"{idx}: {fr.path}")
@@ -54,3 +53,20 @@ def delete_duplicates(duplicates, dry_run: bool, mode: str):
                     print(f"Sent to trash: {file.path}")
                 except Exception as e:
                     print(f"Failed to delete {file.path}: {e}\n")
+                    
+
+def process_duplicates(files, dry_run: bool, delete_mode: str):   
+    duplicates = find_duplicates(files)
+
+    if duplicates:
+        for group in duplicates:
+            print("\n - Duplicate set:")
+            for file in group:
+                print(f"{file.path}")
+        if delete_mode is None:
+            delete_mode = input("\nEnter delete mode (clean | manual): \n").strip().lower()
+
+        if delete_mode in ["clean", "c", "manual", "m"]:
+            delete_duplicates(duplicates, dry_run, delete_mode)
+    else:
+        print("No duplicates found.\n")
