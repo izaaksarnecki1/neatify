@@ -27,7 +27,7 @@ def organize(
         False, "--check-duplicates", "-cd", help="Enable duplicate checking and deletion"
     ),
     delete_mode: str = typer.Option(
-        None, "--delete-mode", "-dm", help="How to handle duplicates: oldest | manual",
+        None, "--delete-mode", "-dm", help="How to handle duplicates: clean | manual",
         case_sensitive=False
     )
 
