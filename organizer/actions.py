@@ -1,6 +1,7 @@
 from pathlib import Path
 from organizer.filerecord import FileRecord
 import shutil
+import logging
 
 
 class Organizer:
@@ -11,7 +12,7 @@ class Organizer:
 
     def organize(self, file: FileRecord) -> bool:
         if not file.category:
-            print(f"[SKIP] {file.path} has no recognized category.")
+            logging.warning(f"{file.path} has no recognized category.")
             return False
 
         dest_folder = self.dest_root / file.category
@@ -20,20 +21,20 @@ class Organizer:
             # parents checks if any parents are missing, if yes then they are created
             # exist_ok ensures error only raised if given path exists and is not a dir
             dest_folder.mkdir(parents=True, exist_ok=True)
-            print(f"[CREATE] Created folder: {dest_folder}")
+            logging.debug(f"Created folder: {dest_folder}")
 
         dest_path = self._get_unique_destination(dest_folder, file)
 
         if self.dry_run:
-            print(f"[DRY-RUN] Would move {file.path} -> {dest_path}")
+            logging.info(f"[DRY-RUN] Would move {file.path} -> {dest_path}")
             return True
 
         try:
             shutil.move(str(file.path), str(dest_path))
-            print(f"[MOVED] {file.path.name} -> {dest_path}")
+            logging.info(f"[MOVED] {file.path.name} -> {dest_path}")
             return True
         except Exception as e:
-            print(f"[ERROR] Failed to move {file.path}: {e}")
+            logging.error(f"Failed to move {file.path}: {e}")
             return False
 
     def organize_all(self, files: list[FileRecord]):
@@ -57,13 +58,13 @@ class Organizer:
                 else:
                     stats["failed"] += 1
 
-        print("\nSummary:")
-        print(f"  -> Moved/simulated: {stats['moved']}")
-        print(f"  -> Skipped: {stats['skipped']}")
-        print(f"  -> Failed: {stats['failed']}")
-        print("  -> By category:")
+        logging.info("\n Summary:")
+        logging.info(f"  -> Moved/simulated: {stats['moved']}")
+        logging.info(f"  -> Skipped: {stats['skipped']}")
+        logging.info(f"  -> Failed: {stats['failed']}")
+        logging.info("  -> By category:")
         for cat, count in stats["by_category"].items():
-            print(f"    - {cat}: {count} file(s)")
+            logging.info(f"    - {cat}: {count} file(s)")
 
     def _get_unique_destination(self, dest_folder: Path, file: FileRecord) -> Path:
         base = file.path.stem

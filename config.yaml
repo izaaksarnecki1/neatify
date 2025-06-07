@@ -1,6 +1,7 @@
 source: "~/Downloads"
 dest: "~/Organized"
 dry_run: true
+verbose: true
 check_duplicates: true
 categories:
   images: ["*.jpg", "*.png", "*jpeg", "*.gif"]

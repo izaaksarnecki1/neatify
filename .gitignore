@@ -12,3 +12,7 @@ pip-delete-this-directory.txt
 
 .vscode/
 .idea/
+
+logs/
+
+*.log
