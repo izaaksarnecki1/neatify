@@ -1,6 +1,7 @@
 source: "~/Downloads"
 dest: "~/Organized"
 dry_run: true
+check_duplicates: true
 categories:
   images: ["*.jpg", "*.png", "*jpeg", "*.gif"]
   documents: ["*.pdf", "*.docx", "*.txt"] # maybe .txt is not necessarily under the same category?
