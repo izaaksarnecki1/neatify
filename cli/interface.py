@@ -23,8 +23,16 @@ def organize(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Run without applying changes"
     ),
+    check_duplicates: bool = typer.Option(
+        False, "--check-duplicates", "-cd", help="Enable duplicate checking and deletion"
+    ),
+    delete_mode: str = typer.Option(
+        None, "--delete-mode", "-dm", help="How to handle duplicates: clean | manual",
+        case_sensitive=False
+    )
+
 ):
-    """
+    """ 
     Organize files from SOURCE into categorized folders in DEST
     """
     source_path = validate_path(source)
@@ -32,4 +40,4 @@ def organize(
 
     from main import run
 
-    run(source_path, dest_path, dry_run)
+    run(source_path, dest_path, dry_run, delete_mode, check_duplicates)
