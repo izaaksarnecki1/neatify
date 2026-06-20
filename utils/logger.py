@@ -2,8 +2,10 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
+LOG_DIR = Path("logs")
 
-def setup_logger(verbose: bool = False, log_dir: str = "logs") -> None:
+
+def setup_logger(verbose: bool = False, log_dir: Path | str = LOG_DIR) -> None:
     level = logging.DEBUG if verbose else logging.INFO
 
     log_path = Path(log_dir).expanduser()

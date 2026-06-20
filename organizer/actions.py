@@ -1,14 +1,21 @@
 from pathlib import Path
 from organizer.filerecord import FileRecord
+from organizer.movelog import MoveLog
 import shutil
 import logging
 
 
 class Organizer:
-    def __init__(self, dest_root: Path, dry_run: bool):
+    def __init__(
+        self,
+        dest_root: Path,
+        dry_run: bool,
+        move_log: MoveLog | None = None,
+    ):
         # TODO: Add some way to ignore certain dirs. Moving . dirs may not be necessary
         self.dest_root = dest_root.expanduser()
         self.dry_run = dry_run
+        self.move_log = move_log
 
     def organize(self, file: FileRecord) -> bool:
         if not file.category:
@@ -32,6 +39,8 @@ class Organizer:
         try:
             shutil.move(str(file.path), str(dest_path))
             logging.info(f"[MOVED] {file.path.name} -> {dest_path}")
+            if self.move_log is not None:
+                self.move_log.record(file.path, dest_path)
             return True
         except Exception as e:
             logging.error(f"Failed to move {file.path}: {e}")

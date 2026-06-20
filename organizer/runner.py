@@ -1,11 +1,13 @@
+from datetime import datetime
 from pathlib import Path
 
 from config import load_config
 from organizer.actions import Organizer
 from organizer.classifier import Classifier
 from organizer.duplicates import process_duplicates
+from organizer.movelog import MoveLog
 from organizer.scanner import Scanner
-from utils.logger import setup_logger
+from utils.logger import LOG_DIR, setup_logger
 
 
 def run(
@@ -31,9 +33,12 @@ def run(
     root = Path(config["source"]).expanduser()
     dest_root = Path(config["dest"]).expanduser()
 
+    run_id = datetime.now().strftime("%Y%m%dT%H%M%S")
+    move_log = None if dry_run else MoveLog(LOG_DIR, run_id)
+
     scanner = Scanner(root)
     classifier = Classifier(config["categories"])
-    organizer = Organizer(dest_root, dry_run)
+    organizer = Organizer(dest_root, dry_run, move_log=move_log)
 
     files = scanner.scan()
     print(f"Found {len(files)} files.")
@@ -42,6 +47,9 @@ def run(
         file.category = classifier.classify(file)
 
     organizer.organize_all(files)
+
+    if move_log is not None and move_log.path.exists():
+        print(f"\nUndo this run with: neatify undo --run {run_id}")
 
     if check_duplicates:
         post_move_files = Scanner(dest_root).scan()
