@@ -1,20 +1,13 @@
 from pathlib import Path
+
 from organizer.filerecord import FileRecord
 
 
 class Scanner:
-    """
-    Class used to recursively scan through some folder to collect all files
-    """
+    """Recursively walks a folder and yields FileRecord objects for each file."""
 
     def __init__(self, root: Path):
-        self.root = root
+        self.root = Path(root).expanduser()
 
-    def scan(self):
-        files = []
-
-        for path in self.root.rglob("*"):
-            if path.is_file():
-                files.append(FileRecord(path))
-
-        return files
+    def scan(self) -> list[FileRecord]:
+        return [FileRecord(path) for path in self.root.rglob("*") if path.is_file()]

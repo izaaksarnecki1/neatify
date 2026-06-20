@@ -1,16 +1,20 @@
 import logging
-import datetime
+from datetime import datetime
+from pathlib import Path
 
 
-def setup_logger(verbose: bool = False, log_file: str = "logs/neatify"):
+def setup_logger(verbose: bool = False, log_dir: str = "logs") -> None:
     level = logging.DEBUG if verbose else logging.INFO
-    log_file += "-" + str(datetime.datetime.now()) + ".log"
+
+    log_path = Path(log_dir).expanduser()
+    log_path.mkdir(parents=True, exist_ok=True)
+    log_file = log_path / f"neatify-{datetime.now().strftime('%Y%m%dT%H%M%S')}.log"
 
     logging.basicConfig(
         level=level,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
             logging.FileHandler(log_file),
-            logging.StreamHandler()
-        ]
+            logging.StreamHandler(),
+        ],
     )

@@ -2,7 +2,6 @@ from pathlib import Path
 import hashlib
 
 
-
 class FileRecord:
     """
     Wrapper class around files to capture metadata.
@@ -16,12 +15,11 @@ class FileRecord:
         self.hash = None
         self.size = path.stat().st_size
 
-
     def compute_hash(self, chunk_size: int = 8192) -> str:
         if self.hash is None:
             h = hashlib.md5()
-            with self.path.open('rb') as f:
-                for chunk in iter(lambda: f.read(chunk_size), b''):
+            with self.path.open("rb") as f:
+                for chunk in iter(lambda: f.read(chunk_size), b""):
                     h.update(chunk)
             self.hash = h.hexdigest()
         return self.hash
