@@ -10,3 +10,7 @@ categories:
   videos: ["*.mp4", "*.mov"]
   archives: ["*.tar.gz", "*.zip", "*.rar"]
   uncategorized: []
+ignore:
+  names: [".git", "node_modules", "__pycache__", ".venv", "venv", ".idea", ".vscode"]
+  patterns: ["*.pyc", "*.log", ".DS_Store", "Thumbs.db"]
+

@@ -47,6 +47,17 @@ def organize(
         help="How to handle duplicates: clean | manual",
         case_sensitive=False,
     ),
+    ignore: list[str] = typer.Option(
+        None,
+        "--ignore",
+        "-i",
+        help="Extra glob pattern to ignore (repeatable). Adds to config 'ignore.patterns'.",
+    ),
+    include_hidden: bool = typer.Option(
+        False,
+        "--include-hidden",
+        help="Don't skip dotfiles/dotdirs (overrides the default hidden-file filter).",
+    ),
 ):
     """Organize files from SOURCE into categorized folders in DEST."""
     run(
@@ -56,6 +67,8 @@ def organize(
         verbose=verbose,
         check_duplicates=check_duplicates,
         delete_mode=delete_mode,
+        extra_ignore=ignore,
+        include_hidden=include_hidden,
     )
 
 

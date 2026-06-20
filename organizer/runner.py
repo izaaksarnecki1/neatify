@@ -5,6 +5,7 @@ from config import load_config
 from organizer.actions import Organizer
 from organizer.classifier import Classifier
 from organizer.duplicates import process_duplicates
+from organizer.ignore import Ignorer
 from organizer.movelog import MoveLog
 from organizer.scanner import Scanner
 from utils.logger import LOG_DIR, setup_logger
@@ -17,6 +18,8 @@ def run(
     verbose: bool,
     check_duplicates: bool,
     delete_mode: str | None,
+    extra_ignore: list[str] | None = None,
+    include_hidden: bool = False,
 ) -> None:
     config = load_config()
     if source:
@@ -33,10 +36,14 @@ def run(
     root = Path(config["source"]).expanduser()
     dest_root = Path(config["dest"]).expanduser()
 
+    ignorer = Ignorer.from_config(
+        config, extra_patterns=extra_ignore, include_hidden=include_hidden
+    )
+
     run_id = datetime.now().strftime("%Y%m%dT%H%M%S")
     move_log = None if dry_run else MoveLog(LOG_DIR, run_id)
 
-    scanner = Scanner(root)
+    scanner = Scanner(root, ignorer=ignorer)
     classifier = Classifier(config["categories"])
     organizer = Organizer(dest_root, dry_run, move_log=move_log)
 
@@ -52,5 +59,5 @@ def run(
         print(f"\nUndo this run with: neatify undo --run {run_id}")
 
     if check_duplicates:
-        post_move_files = Scanner(dest_root).scan()
+        post_move_files = Scanner(dest_root, ignorer=ignorer).scan()
         process_duplicates(post_move_files, dry_run, delete_mode)
