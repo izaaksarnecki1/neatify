@@ -13,6 +13,4 @@ pip-delete-this-directory.txt
 .vscode/
 .idea/
 
-logs/
-
-*.log
+.DS_Store
